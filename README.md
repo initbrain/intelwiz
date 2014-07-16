@@ -9,7 +9,7 @@ Intelligence Wizard
 
 *   **State:**
 
-    This is a Proof of Concept... Interactive FlowChart in Python !
+    This is a Proof of Concept... Interactive FlowChart in Python !  
     Changes may occur in the future ;)
 
 
