@@ -1,0 +1,9 @@
+Intelligence Wizard
+MIT License - http://opensource.org/licenses/MIT
+
+Installation ($: user, #: root):
+    # apt-get install git python-setuptools python-pip
+    $ git clone git://github.com/initbrain/intelwiz.git
+    $ cd intelwiz/
+    # python setup.py install
+    # intelwiz

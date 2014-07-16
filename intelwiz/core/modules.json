@@ -1,0 +1,60 @@
+{
+    "Intelligence Wizard":
+        [
+            {
+                "name": "Graphical interface",
+                "dependency":
+                    [
+                        {
+                            "name": "pyqtgraph",
+                            "desc": "",
+                            "type": "lib",
+                            "homepage":
+                                [
+                                    ""
+                                ],
+                            "doc":
+                                [
+                                    ""
+                                ],
+                            "install":
+                                [
+                                    {
+                                        "type": "pip",
+                                        "target": "pyqtgraph",
+                                        "tested":
+                                            [
+                                                "xubuntu 14.04"
+                                            ]
+                                    }
+                                ]
+                        },
+                        {
+                            "name": "scipy",
+                            "desc": "",
+                            "type": "lib",
+                            "homepage":
+                                [
+                                    ""
+                                ],
+                            "doc":
+                                [
+                                    ""
+                                ],
+                            "install":
+                                [
+                                    {
+                                        "type": "apt-get",
+                                        "target": "python-scipy",
+                                        "tested":
+                                            [
+                                                "xubuntu 14.04"
+                                            ]
+                                    }
+                                ]
+                        }
+                    ]
+            }
+
+        ]
+}
