@@ -36,7 +36,7 @@ Intelligence Wizard
 
 *   **Screenshot:**
 
-    ![Intelligence Wizard](https://raw.githubusercontent.com/initbrain/intelwiz/master/intelwiz/images/demo_webparsing.png)
+    ![Intelligence Wizard](https://raw.githubusercontent.com/initbrain/intelwiz/master/intelwiz/examples/demo_webparsing.png)
 
 
 *   **Installation ($: user, #: root):**

@@ -189,7 +189,10 @@ class Flowchart(Node):
         if name is None:
             n = 0
             while True:
-                name = "%s.%d" % (nodeType, n)
+                if not n:
+                    name = nodeType
+                else:
+                    name = "%s.%d" % (nodeType, n)
                 if name not in self._nodes:
                     break
                 n += 1
@@ -794,7 +797,7 @@ class FlowchartCtrlWidget(QtGui.QWidget):
     def freezeClicked(self): #TODO Added
         btn = QtCore.QObject.sender(self)
         btn.node.freeze(btn.isChecked())
-            
+
     def chartWidget(self):
         return self.chartWidget
 

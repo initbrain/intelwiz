@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# PoC need to take control of that libcode
+# PoC need to take control of libcode
 # from pyqtgraph.flowchart.library.common import CtrlNode
 # from pyqtgraph.flowchart import Flowchart, Node
 # import pyqtgraph.flowchart.library as fclib
@@ -26,11 +26,12 @@ cw.setLayout(layout)
 
 # Create an empty flowchart with a single input and output
 fc = Flowchart(terminals={
-    'dataOut': {'io': 'out'}    
+    'output': {'io': 'out'}
 })
 
 # Workaround to remove the default 'Input' node
 fc.removeNode(fc._nodes['Input'])
+fc.removeNode(fc._nodes['Output'])
 
 # Flowchart list and control boutons
 w = fc.widget()
@@ -41,25 +42,97 @@ cursor = QtGui.QTextCursor(textArea.document())
 #cursor.insertText("hello world")
 
 # Refresh zone (outputs->JSON)
-button = QtGui.QPushButton('Update JSON')
-def handleButton():
-    textArea.clear()
-    print str(fc.outputNode.inputValues())
-    cursor.insertText(str(dumps(fc.outputNode.inputValues(), indent=4)))
-button.clicked.connect(handleButton)
+# button = QtGui.QPushButton('Update JSON')
+# def handleButton():
+#     textArea.clear()
+#     print str(fc.outputNode.inputValues())
+#     cursor.insertText(str(dumps(fc.outputNode.inputValues(), indent=4)))
+# button.clicked.connect(handleButton)
 
 # GUI stuffs
 # w.chartWidget.hoverDock.hide()
 # w.chartWidget.selDock.hide()
 layout.addWidget(w, 0, 0, 2, 1)
 layout.addWidget(w.cwWin, 0, 1, 2, 1)
-layout.addWidget(textArea, 1, 2, 1, 1)
-layout.addWidget(button, 0, 2, 1, 1)
+layout.addWidget(textArea, 0, 2, 2, 1)
+# layout.addWidget(button, 0, 2, 1, 1)
 layout.setColumnMinimumWidth(0, 300)
 layout.setColumnMinimumWidth(1, 400)
-layout.setColumnMinimumWidth(2, 300)
+# layout.setColumnMinimumWidth(2, 300)
 w.ui.showChartBtn.toggle()
 win.show()
+
+
+class OutputNode(CtrlNode):
+    """Return the source code behind a website url"""
+    nodeName = 'Output'
+
+    def __init__(self, name):
+        Node.__init__(self, name,
+            terminals = {
+                'output': {'io': 'in', 'renamable': True},
+            },
+            allowAddInput=True, allowAddOutput=False)
+
+        self.ui = QtGui.QWidget()
+        self.layout = QtGui.QGridLayout()
+        self.saveBtn = QtGui.QPushButton('Save As..')
+        self.saveBtn.setEnabled(False)
+        self.showJsonBtn = QtGui.QPushButton('Show JSON')
+        self.showJsonBtn.setToolTip("Show Output in JSON format")
+        self.showJsonBtn.setCheckable(True)
+        # if textArea.x :
+        #
+        self.showJsonBtn.setChecked(True)
+        # if self.showJsonBtn.released ==  True:
+        #     self.showJsonBtn.setEnabled(False)
+        self.showJsonBtn.clicked.connect(self.showJsonClicked)
+        # self.text = QtGui.QTextEdit()
+        # self.text.setTabStopWidth(30)
+        # self.text.setPlainText("Hello world!")
+        self.layout.addWidget(self.showJsonBtn, 0, 0)
+        self.layout.addWidget(self.saveBtn, 0, 1)
+        # self.layout.addWidget(self.text, 1, 0, 1, 2)
+        self.ui.setLayout(self.layout)
+
+        #QtCore.QObject.connect(self.addInBtn, QtCore.SIGNAL('clicked()'), self.addInput)
+        #self.addInBtn.clicked.connect(self.addInput)
+        #QtCore.QObject.connect(self.addOutBtn, QtCore.SIGNAL('clicked()'), self.addOutput)
+        #self.addOutBtn.clicked.connect(self.addOutput)
+        # self.text.focusOutEvent = self.focusOutEvent
+        # self.lastText = None
+
+        # To force update for all node inputs and ctrls (and launch some requests ...)
+        self.update()
+
+    def showJsonClicked(self):  #TODO Added
+        btn = QtCore.QObject.sender(self)
+        # btn.node.freeze(btn.isChecked())
+        if btn.isChecked():
+            textArea.show()
+        else:
+            textArea.hide()
+
+    def ctrlWidget(self):
+        return self.ui
+
+    def process(self, output, display=True, *therest):
+        textArea.clear()
+        cursor.insertText(str(dumps(fc.outputNode.inputValues(), indent=4)))
+        return None
+
+    def saveState(self):  # TODO Added
+        state = Node.saveState(self)
+        # state['json'] = True
+        #state['terminals'] = self.saveTerminals()
+        return state
+
+    def restoreState(self, state):  # TODO Added
+        Node.restoreState(self, state)
+        # self.text.clear()
+        # self.text.insertPlainText(state['text'])
+        # self.restoreTerminals(state['terminals'])
+        self.update()
 
 
 # We will define an unsharp masking filter node as a subclass of CtrlNode.
@@ -189,7 +262,7 @@ class Network():
 
 fclib.registerNodeType(GetSourceNode, [('Web',)])
 fclib.registerNodeType(TextEditNode, [('Input',)])
-
+fclib.registerNodeType(OutputNode, [('Output',)])
 
 # Now we will programmatically add nodes to define the function of the flowchart.
 # Normally, the user will do this manually or by loading a pre-generated
@@ -208,6 +281,8 @@ fclib.registerNodeType(TextEditNode, [('Input',)])
 # fc.inputNode = tNode
 # fc.connectTerminals(tNode['output'], fc['dataOut'])
 
+myOutputNode = fc.createNode('Output', pos=(300, 0))
+fc.outputNode = myOutputNode
 
 def main():
     import sys
