@@ -30,10 +30,12 @@ def registerNodeType(cls, paths, override=False):
                 type will appear in the library tree.
         override - if True, overwrite any class having the same name
     """
+    # print cls.nodeName
     if not isNodeClass(cls):
         raise Exception("Object %s is not a Node subclass" % str(cls))
     
     name = cls.nodeName
+    # print NODE_LIST
     if not override and name in NODE_LIST:
         raise Exception("Node type name '%s' is already registered." % name)
     

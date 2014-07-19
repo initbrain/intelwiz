@@ -55,7 +55,7 @@ def toposort(deps, nodes=None, seen=None, stack=None, depth=0):
         sorted.append(n)
         #print "  "*depth, "  ", sorted
     return sorted
-        
+
 
 class Flowchart(Node):
     
@@ -87,18 +87,19 @@ class Flowchart(Node):
         
         self.widget()
         
-        self.inputNode = Node('Input', allowRemove=False, allowAddOutput=True)
+        # self.inputNode = Node('Input', allowRemove=False, allowAddOutput=True)
+        # self.outputNode = None
         self.outputNode = Node('Output', allowRemove=False, allowAddInput=True)
-        self.addNode(self.inputNode, 'Input', [-150, 0])
+        # self.addNode(self.inputNode, 'Input', [-150, 0])
         self.addNode(self.outputNode, 'Output', [300, 0])
         
         self.outputNode.sigOutputChanged.connect(self.outputChanged)
         self.outputNode.sigTerminalRenamed.connect(self.internalTerminalRenamed)
-        self.inputNode.sigTerminalRenamed.connect(self.internalTerminalRenamed)
+        # # self.inputNode.sigTerminalRenamed.connect(self.internalTerminalRenamed)
         self.outputNode.sigTerminalRemoved.connect(self.internalTerminalRemoved)
-        self.inputNode.sigTerminalRemoved.connect(self.internalTerminalRemoved)
+        # # self.inputNode.sigTerminalRemoved.connect(self.internalTerminalRemoved)
         self.outputNode.sigTerminalAdded.connect(self.internalTerminalAdded)
-        self.inputNode.sigTerminalAdded.connect(self.internalTerminalAdded)
+        # # self.inputNode.sigTerminalAdded.connect(self.internalTerminalAdded)
         
         self.viewBox.autoRange(padding = 0.04)
             
@@ -482,7 +483,7 @@ class Flowchart(Node):
         for a, b in conn:
             state['connects'].append((a.node().name(), a.name(), b.node().name(), b.name()))
         
-        state['inputNode'] = self.inputNode.saveState()
+        # state['inputNode'] = self.inputNode.saveState()
         state['outputNode'] = self.outputNode.saveState()
         
         return state
@@ -507,7 +508,7 @@ class Flowchart(Node):
                     printExc("Error creating node %s: (continuing anyway)" % n['name'])
                 #node.graphicsItem().moveBy(*n['pos'])
                 
-            self.inputNode.restoreState(state.get('inputNode', {}))
+            # self.inputNode.restoreState(state.get('inputNode', {}))
             self.outputNode.restoreState(state.get('outputNode', {}))
                 
             #self.restoreTerminals(state['terminals'])
@@ -568,7 +569,7 @@ class Flowchart(Node):
 
     def clear(self):
         for n in list(self._nodes.values()):
-            if n is self.inputNode or n is self.outputNode:
+            if n is self.outputNode:
                 continue
             n.close()  ## calls self.nodeClosed(n) by signal
         #self.clearTerminals()
@@ -576,7 +577,7 @@ class Flowchart(Node):
         
     def clearTerminals(self):
         Node.clearTerminals(self)
-        self.inputNode.clearTerminals()
+        # self.inputNode.clearTerminals()
         self.outputNode.clearTerminals()
 
 #class FlowchartGraphicsItem(QtGui.QGraphicsItem):
@@ -983,4 +984,3 @@ class FlowchartWidget(dockarea.DockArea):
         
 class FlowchartNode(Node):
     pass
-

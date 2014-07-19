@@ -56,4 +56,4 @@ class Ui_Form(object):
         Form.setWindowTitle(QtGui.QApplication.translate("Form", "Form", None, QtGui.QApplication.UnicodeUTF8))
 
 from pyqtgraph.widgets.DataTreeWidget import DataTreeWidget
-from pyqtgraph.flowchart.FlowchartGraphicsView import FlowchartGraphicsView
+from intelwiz.core.flowchart.FlowchartGraphicsView import FlowchartGraphicsView

@@ -682,4 +682,3 @@ class NodeGraphicsItem(GraphicsObject):
         
     def addOutputFromMenu(self):  ## called when add output is clicked in context menu
         self.node.addOutput(renamable=True, removable=True, multiable=False)
-        

@@ -131,7 +131,6 @@ class CtrlNode(Node):
         l.show()
 
 
-
 def metaArrayWrapper(fn):
     def newFn(self, data, *args, **kargs):
         if HAVE_METAARRAY and (hasattr(data, 'implements') and data.implements('MetaArray')):

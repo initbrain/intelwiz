@@ -30,7 +30,7 @@ fc = Flowchart(terminals={
 })
 
 # Workaround to remove the default 'Input' node
-fc.removeNode(fc._nodes['Input'])
+# fc.removeNode(fc._nodes['Input'])
 fc.removeNode(fc._nodes['Output'])
 
 # Flowchart list and control boutons
@@ -72,7 +72,7 @@ class OutputNode(CtrlNode):
             terminals = {
                 'output': {'io': 'in', 'renamable': True},
             },
-            allowAddInput=True, allowAddOutput=False)
+            allowAddInput=True, allowAddOutput=False, allowRemove=False)
 
         self.ui = QtGui.QWidget()
         self.layout = QtGui.QGridLayout()
@@ -116,7 +116,7 @@ class OutputNode(CtrlNode):
     def ctrlWidget(self):
         return self.ui
 
-    def process(self, output, display=True, *therest):
+    def process(self, output=None, display=True, **kargs):
         textArea.clear()
         cursor.insertText(str(dumps(fc.outputNode.inputValues(), indent=4)))
         return None
@@ -252,7 +252,7 @@ class Network():
         cookieOut = urlfile.info().getheader("Set-Cookie")
         if len(cookieOut):
             cookieOut = cookieOut.replace(',',';')
-        print "[i] Cookie : %s" % cookieOut
+        # print "[i] Cookie : %s" % cookieOut
 
         return urlIn, cookieOut, source
 
@@ -262,7 +262,7 @@ class Network():
 
 fclib.registerNodeType(GetSourceNode, [('Web',)])
 fclib.registerNodeType(TextEditNode, [('Input',)])
-fclib.registerNodeType(OutputNode, [('Output',)])
+fclib.registerNodeType(OutputNode, [])
 
 # Now we will programmatically add nodes to define the function of the flowchart.
 # Normally, the user will do this manually or by loading a pre-generated
