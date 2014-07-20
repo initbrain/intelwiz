@@ -122,6 +122,7 @@ class Flowchart(Node):
         self.widget().outputChanged(vals)
         self.setOutput(**vals)
         #self.sigOutputChanged.emit(self)
+        print "test"  # TODO
         
     def output(self):
         """Return a dict of the values on the Flowchart's output terminals.
@@ -525,7 +526,7 @@ class Flowchart(Node):
             self.blockSignals(False)
             
         self.sigChartLoaded.emit()
-        self.outputChanged()
+        # self.outputChanged()
         self.sigStateChanged.emit()
         #self.sigOutputChanged.emit()
             
@@ -645,7 +646,7 @@ class FlowchartCtrlWidget(QtGui.QWidget):
         self.cwWin = QtGui.QMainWindow()
         self.cwWin.setWindowTitle('Flowchart')
         self.cwWin.setCentralWidget(self.chartWidget)
-        self.cwWin.resize(1000,800)
+        self.cwWin.resize(1000, 800)
         
         h = self.ui.ctrlList.header()
         h.setResizeMode(0, h.Stretch)
@@ -837,8 +838,8 @@ class FlowchartWidget(dockarea.DockArea):
 
         self.hoverText = QtGui.QTextEdit()
         self.hoverText.setReadOnly(True)
-        self.hoverText.setLineWrapMode(QtGui.QTextEdit.NoWrap) #TODO Added
-        self.hoverDock = dockarea.Dock('Hover Info', size=(1000,20))
+        # self.hoverText.setLineWrapMode(QtGui.QTextEdit.NoWrap)  # TODO make configurable
+        self.hoverDock = dockarea.Dock('Hover Info', size=(1000, 20))
         self.hoverDock.addWidget(self.hoverText)
         self.addDock(self.hoverDock, 'bottom')
 
@@ -849,11 +850,12 @@ class FlowchartWidget(dockarea.DockArea):
         self.selNameLabel = QtGui.QLabel()
         self.selDescLabel.setWordWrap(True)
         self.selectedTree = pg.DataTreeWidget()
-        # self.selectedTree.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.selectedTree.setWordWrap(True)  # TODO Added
+        #self.selectedTree.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         #self.selInfoLayout.addWidget(self.selNameLabel)
         self.selInfoLayout.addWidget(self.selDescLabel)
         self.selInfoLayout.addWidget(self.selectedTree)
-        self.selDock = dockarea.Dock('Selected Node', size=(1000,200))
+        self.selDock = dockarea.Dock('Selected Node', size=(1000, 200))
         self.selDock.addWidget(self.selInfo)
         self.addDock(self.selDock, 'bottom')
         

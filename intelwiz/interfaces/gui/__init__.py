@@ -26,7 +26,7 @@ cw.setLayout(layout)
 
 # Create an empty flowchart with a single input and output
 fc = Flowchart(terminals={
-    'output': {'io': 'out'}
+    'output': {'io': 'out', 'multi': True, 'renamable': True, 'removable': True}
 })
 
 # Workaround to remove the default 'Input' node
@@ -38,6 +38,7 @@ w = fc.widget()
 
 # TextEdit (for JSON results)
 textArea = QtGui.QTextEdit()
+textArea.setReadOnly(True)
 cursor = QtGui.QTextCursor(textArea.document())
 #cursor.insertText("hello world")
 
@@ -70,7 +71,7 @@ class OutputNode(CtrlNode):
     def __init__(self, name):
         Node.__init__(self, name,
             terminals = {
-                'output': {'io': 'in', 'renamable': True},
+                'result': {'io': 'in', 'renamable': True, 'removable': True},
             },
             allowAddInput=True, allowAddOutput=False, allowRemove=False)
 
